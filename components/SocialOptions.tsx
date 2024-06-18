@@ -4,8 +4,9 @@ import { MessageCircleMore, Repeat, Send, ThumbsUp } from 'lucide-react'
 
 const SocialOptions = () => {
   return (
-    <div>
-      <div className='flex items-center m-1 justify-between'>
+   
+    <div className=''>
+        <div className='flex items-center justify-between'>
         <Button className='flex items-center gap-1 rounded-lg text-gray-600 hover:text-black' variant={'ghost'}>
             <ThumbsUp />
             <p>Like</p>
@@ -14,16 +15,17 @@ const SocialOptions = () => {
             <MessageCircleMore />
             <p>Comment</p>
         </Button>
-        <Button className='flex items-center gap-1 rounded-lg text-gray-600 hover:text-black' variant={'ghost'}>
+        {/* <Button className='flex items-center gap-1 rounded-lg text-gray-600 hover:text-black' variant={'ghost'}>
             <Repeat />
             <p>Repost</p>
-        </Button>
+        </Button> */}
         <Button className='flex items-center gap-1 rounded-lg text-gray-600 hover:text-black' variant={'ghost'}>
             <Send />
             <p>Send</p>
         </Button>
       </div>
     </div>
+   
   )
 }
 

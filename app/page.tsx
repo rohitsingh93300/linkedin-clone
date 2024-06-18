@@ -8,8 +8,8 @@ export default async function Home() {
   console.log(user);
   
   return (
-    <div className="pt-20">
-      <div className="max-w-6xl mx-auto flex justify-between gap-8">
+    <div className="md:pt-20 pt-14 ">
+      <div className="md:max-w-6xl mx-auto flex justify-between gap-8">
          {/* Sidebar */}
          <Sidebar user={user}/>
          {/* feed */}

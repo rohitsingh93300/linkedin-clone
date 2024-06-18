@@ -46,8 +46,9 @@ export function PostDialog({setOpen, open, src}:{setOpen:any, open:boolean, src:
   }
 
   return (
-    <Dialog open={open}>   
-      <DialogContent onInteractOutside={()=> setOpen(false)} className="sm:max-w-[425px]">
+   <div className="">
+     <Dialog open={open}>   
+      <DialogContent onInteractOutside={()=> setOpen(false)} className="md:max-w-[425px] max-w-[350px]">
         <DialogHeader>
           <DialogTitle className="flex gap-2">
             <ProfilePhoto src={src}/>
@@ -92,5 +93,6 @@ export function PostDialog({setOpen, open, src}:{setOpen:any, open:boolean, src:
         </Button>
       </DialogContent>
     </Dialog>
+   </div>
   )
 }
