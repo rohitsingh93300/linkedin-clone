@@ -3,45 +3,45 @@
 import { Post } from "@/models/post.model";
 import { IUser } from "@/models/user.model";
 import { currentUser } from "@clerk/nextjs/server"
-import {v2 as cloudinary} from 'cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
 import connectDB from "./db";
 import { revalidatePath } from "next/cache";
 
 // Configuration
-cloudinary.config({ 
-    cloud_name: process.env.CLOUD_NAME, 
-    api_key: process.env.API_KEY, 
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET // Click 'View Credentials' below to copy your API secret
 });
 
 // creating post using server actions
-export const createPostAction = async (inputText:string, selectedFile:string) => {
+export const createPostAction = async (inputText: string, selectedFile: string) => {
     await connectDB()
     const user = await currentUser()
-     
-    if(!user) throw new Error('User not authenticated');
-    if(!inputText) throw new Error('Input field is required');
+
+    if (!user) throw new Error('User not authenticated');
+    if (!inputText) throw new Error('Input field is required');
 
     const image = selectedFile;
     const userDatabase: IUser = {
-        firstName:user.firstName || 'Rohit',
-        lastName:user.lastName || 'singh',
-        userId:user.id,
+        firstName: user.firstName || 'Rohit',
+        lastName: user.lastName || 'singh',
+        userId: user.id,
         profilePhoto: user.imageUrl
     }
     // console.log("rohituser", user)
     let uploadResponse;
 
     try {
-        if(image){
+        if (image) {
             //1. create post with image
             uploadResponse = await cloudinary.uploader.upload(image);
             await Post.create({
-                description:inputText,
+                description: inputText,
                 user: userDatabase,
                 imageUrl: uploadResponse?.secure_url
             })
-        }else{
+        } else {
             //2. create post with text only
             await Post.create({
                 description: inputText,
@@ -49,7 +49,7 @@ export const createPostAction = async (inputText:string, selectedFile:string) =>
             })
         }
         revalidatePath("/")
-    } catch (error:any) {
+    } catch (error: any) {
         throw new Error(error)
     }
 }
@@ -58,11 +58,31 @@ export const createPostAction = async (inputText:string, selectedFile:string) =>
 export const getAllPosts = async () => {
     await connectDB()
     try {
-        const posts = await Post.find().sort({createdAt: -1});
+        const posts = await Post.find().sort({ createdAt: -1 });
         return JSON.parse(JSON.stringify(posts));
-        
+
     } catch (error) {
         console.log(error);
-        
+
+    }
+}
+
+//delete post by Id
+export const deletePostAction = async (postId: unknown) => {
+    await connectDB();
+    const user = await currentUser();
+    if (!user) throw new Error('User not authenticated')
+    const post = await Post.findById(postId);
+    if (!post) throw new Error('Post not found')
+
+    //sirf apna post delete kr payenge
+    if (post.user.userId !== user.id) {
+        throw new Error('You are not an owner of this post')
+    }
+    try {
+        await Post.deleteOne({ _id: postId })
+        revalidatePath('/')
+    } catch (error: any) {
+        throw new Error('An error occured', error)
     }
 }
