@@ -12,9 +12,9 @@ const Navbar = () => {
         <div className='flex items-center max-w-6xl justify-between h-14 mx-auto px-3'>
            <div className='flex items-center gap-2'>
             <Image
-            src={'/Linkedin_logo.webp'}
-            width={35}
-            height={35}
+            src={'/Linkedin.png'}
+            width={40}
+            height={40}
             alt='Logo'
             />
             <div className='hidden md:block'>
