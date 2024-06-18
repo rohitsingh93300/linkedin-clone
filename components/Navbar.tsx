@@ -26,7 +26,7 @@ const Navbar = () => {
           </div>
         </div>
         <div className='flex items-center gap-5'>
-          <div className='md:block tracking-normal'>
+          <div className='md:block '>
             <NavItems />
           </div>
           <div>

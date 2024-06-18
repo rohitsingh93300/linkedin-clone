@@ -24,11 +24,11 @@ const navItems:NAVITEMS[] = [
         icon: <BriefcaseBusiness/>,
         text: "Jobs",
     },
-    {
-        src: "/message",
-        icon: <MessageCircleMore/>,
-        text: "Messaging",
-    },
+    // {
+    //     src: "/message",
+    //     icon: <MessageCircleMore/>,
+    //     text: "Messaging",
+    // },
     {
         src: "/notification",
         icon: <Bell/>,
