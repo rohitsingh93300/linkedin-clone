@@ -3,7 +3,6 @@ import React from 'react'
 import ProfilePhoto from './shared/ProfilePhoto'
 
 const Sidebar = ({user}:{user:any}) => {
-    console.log(user?.username);
     
   return (
     <div className='hidden md:block w-[20%] h-fit border border-gray-300 bg-white rounded-lg'>
@@ -27,7 +26,7 @@ const Sidebar = ({user}:{user:any}) => {
          <div className='border-b border-b-gray-300'>
           <div className='p-2 mt-5 text-center'>
             <h1 className='font-semibold text-gray-700 hover:underline cursor-pointer'>{user ? `${user?.firstName} ${user?.lastName}` : "Full Name"}</h1>
-            <p className='text-xs'>@{user ? `${user?.externalAccounts[0].username}` : 'username'}</p>
+            <p className='text-xs'>@{user ? `${user?.username}` : 'username'}</p>
           </div>
          </div>
       </div>

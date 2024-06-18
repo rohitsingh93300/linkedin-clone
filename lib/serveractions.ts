@@ -18,6 +18,7 @@ cloudinary.config({
 export const createPostAction = async (inputText:string, selectedFile:string) => {
     await connectDB()
     const user = await currentUser()
+     
     if(!user) throw new Error('User not authenticated');
     if(!inputText) throw new Error('Input field is required');
 
@@ -28,6 +29,7 @@ export const createPostAction = async (inputText:string, selectedFile:string) =>
         userId:user.id,
         profilePhoto: user.imageUrl
     }
+    // console.log("rohituser", user)
     let uploadResponse;
 
     try {
@@ -57,7 +59,6 @@ export const getAllPosts = async () => {
     await connectDB()
     try {
         const posts = await Post.find().sort({createdAt: -1});
-        console.log(posts);
         return JSON.parse(JSON.stringify(posts));
         
     } catch (error) {

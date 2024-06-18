@@ -2,14 +2,14 @@ import React from 'react'
 import Post from './Post'
 import { IPostDocument } from '@/models/post.model'
 
-const Posts = ({ posts }: { posts: IPostDocument[] }) => {
+const Posts = ({ posts}: { posts: IPostDocument[]}) => {
   
   return (
     <div>
       {
         posts?.map((post) => {
           return (
-            <Post key={post._id} post={post} />
+            <Post key={post?._id} post={post} />
           )
         })
       }
@@ -17,4 +17,4 @@ const Posts = ({ posts }: { posts: IPostDocument[] }) => {
   )
 }
 
-export default Posts
+export default Posts;
