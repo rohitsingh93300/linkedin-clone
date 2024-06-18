@@ -42,7 +42,7 @@ const NavItems = () => {
       {navItems.map((items, index)=> (
         <div key={index} className='flex flex-col items-center cursor-pointer text-[#666666] hover:text-black'>
             <span>{items.icon}</span>
-            <Link className='text-xs' href={items.src}>{items.text}</Link>
+            <Link className='text-xs hidden sm:block' href={items.src}>{items.text}</Link>
         </div>
       ))}
     </div>
