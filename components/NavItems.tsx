@@ -10,7 +10,7 @@ type NAVITEMS ={
 
 const navItems:NAVITEMS[] = [
     {
-        src: "/home",
+        src: "/",
         icon: <Home/>,
         text: "Home",
     },
@@ -41,8 +41,11 @@ const NavItems = () => {
     <div className='flex gap-8'>
       {navItems.map((items, index)=> (
         <div key={index} className='flex flex-col items-center cursor-pointer text-[#666666] hover:text-black'>
+            
+            <Link className='flex flex-col items-center' href={items.src}>
             <span>{items.icon}</span>
-            <Link className='text-xs hidden sm:block' href={items.src}>{items.text}</Link>
+            <span className='text-xs sm:block hidden'>{items.text}</span>
+            </Link>
         </div>
       ))}
     </div>
