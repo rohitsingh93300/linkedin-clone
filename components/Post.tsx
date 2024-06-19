@@ -3,7 +3,7 @@ import React from 'react'
 import ProfilePhoto from './shared/ProfilePhoto'
 import { useUser } from '@clerk/nextjs'
 import { Button } from './ui/button'
-import { Bookmark, CreditCard, Edit, EllipsisVertical, Keyboard, Save, SaveIcon, Settings, Trash2, User } from 'lucide-react'
+import { Bookmark,  Edit, EllipsisVertical,  Settings, Trash2 } from 'lucide-react'
 import { Badge } from './ui/badge'
 import PostContent from './PostContent'
 import SocialOptions from './SocialOptions'
@@ -15,9 +15,6 @@ import {
     DropdownMenuContent,
     DropdownMenuGroup,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -37,7 +34,15 @@ const Post = ({ post }: { post: IPostDocument }) => {
                 <ProfilePhoto src={post?.user?.profilePhoto!} />
                 <div className='flex items-center justify-between w-full'>
                     <div>
-                        <h1 className='text-sm font-bold'>{fullName} <Badge variant={'secondary'} className='ml-2'>You</Badge></h1>
+                        <h1 className='text-sm font-bold'>
+                            {fullName} 
+                            {
+                                loggedInUser && (
+
+                                    <Badge variant={'secondary'} className='ml-2'>You</Badge>
+                                )
+                            }
+                        </h1>
                         <p className='text-xs text-gray-500'>@{userName}</p>
 
                         <p className='text-xs text-gray-500'>
@@ -52,9 +57,9 @@ const Post = ({ post }: { post: IPostDocument }) => {
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
 
-                                    <Button size={'icon'} className='rounded-full' variant={'outline'}>
+                                    {/* <Button size={'icon'} className='rounded-full' variant={'outline'}> */}
                                         <EllipsisVertical />
-                                    </Button>
+                                    {/* </Button> */}
 
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-40 mr-2 md:mr-0">
