@@ -6,6 +6,7 @@ import { currentUser } from "@clerk/nextjs/server"
 import { v2 as cloudinary } from 'cloudinary';
 import connectDB from "./db";
 import { revalidatePath } from "next/cache";
+import { Comment } from "@/models/comment.model";
 
 // Configuration
 cloudinary.config({
@@ -58,7 +59,8 @@ export const createPostAction = async (inputText: string, selectedFile: string) 
 export const getAllPosts = async () => {
     await connectDB()
     try {
-        const posts = await Post.find().sort({ createdAt: -1 });
+        const posts = await Post.find().sort({ createdAt: -1 }).populate({ path: 'comments', options: { sort: { createdAt: -1 } } });
+        if(!posts) return []
         return JSON.parse(JSON.stringify(posts));
 
     } catch (error) {
@@ -84,5 +86,37 @@ export const deletePostAction = async (postId: unknown) => {
         revalidatePath('/')
     } catch (error: any) {
         throw new Error('An error occured', error)
+    }
+}
+
+//create comments
+export const createCommentAction = async (postId: unknown, formData: FormData) => {
+    try {
+        const user = await currentUser();
+        if (!user) throw new Error('User not authenticatd')
+        const inputText = formData.get('inputText') as string;
+        if (!inputText) throw new Error('Field is required')
+        if (!postId) throw new Error('Post id is required')
+
+        const userDatabase: IUser = {
+            firstName: user.firstName || 'Rohit',
+            lastName: user.lastName || 'singh',
+            userId: user.id,
+            profilePhoto: user.imageUrl
+        }
+        const post = await Post.findById({ _id: postId });
+        if (!post) throw new Error('Post not found')
+
+        const comment = await Comment.create({
+            textMessage: inputText,
+            user: userDatabase,
+        });
+
+        post.comments?.push(comment.id);
+        await post.save()
+        revalidatePath("/")
+
+    } catch (error) {
+        throw new Error('An error occured')
     }
 }

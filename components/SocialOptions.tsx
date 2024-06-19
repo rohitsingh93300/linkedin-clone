@@ -4,6 +4,8 @@ import { MessageCircleMore, Repeat, Send, ThumbsUp } from 'lucide-react'
 import { IPostDocument } from '@/models/post.model';
 import { useUser } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
+import CommentInput from './commentInput';
+import Comments from './Comments';
 
 const SocialOptions = ({ post }: { post: IPostDocument }) => {
   const { user } = useUser()
@@ -49,15 +51,18 @@ const SocialOptions = ({ post }: { post: IPostDocument }) => {
     <div className=''>
         <div className='text-sm mx-2 p-2 flex items-center justify-between border-b border-gray-300'>
           {
-            likes && likes.length > 0 && (<p className='text-xs text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer'>{likes.length} likes</p>)
+            (likes && likes.length > 0) && (<p className='text-xs text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer'>{likes.length} likes</p>)
+          }
+          {
+            (post.comments && post.comments.length > 0) && (<p onClick={()=> setCommentOpen(!commentOpen)} className='text-xs text-gray-500 hover:text-blue-500 hover:underline hover:cursor-pointer'>{post.comments.length} Comments</p>)
           }
         </div>
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-between p-1'>
         <Button onClick={likeOrDislikeHandler} className='flex items-center gap-1 rounded-lg text-gray-600 hover:text-black' variant={'ghost'}>
           <ThumbsUp className={`${liked && 'fill-[#378FE9]'}`} />
           <p className={`${liked && 'fill-[#378FE9]'}`}>Like</p>
         </Button>
-        <Button className='flex items-center gap-1 rounded-lg text-gray-600 hover:text-black' variant={'ghost'}>
+        <Button onClick={()=> setCommentOpen(!commentOpen)} className='flex items-center gap-1 rounded-lg text-gray-600 hover:text-black' variant={'ghost'}>
           <MessageCircleMore />
           <p>Comment</p>
         </Button>
@@ -70,6 +75,14 @@ const SocialOptions = ({ post }: { post: IPostDocument }) => {
           <p>Send</p>
         </Button>
       </div>
+      {
+        commentOpen && (
+          <div className='p-4'>
+            <CommentInput postId={post._id} />
+            <Comments post={post} />
+          </div>
+        )
+      }
     </div>
 
   )
